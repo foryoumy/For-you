@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>A Special Question For You</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream:        #FBF1EC;   /* page background */
+    --cream-deep:   #F3E2DA;   /* alternate section background */
+    --blush:        #F1C7CE;   /* soft pink accent */
+    --rose-gold:    #C88C86;   /* primary accent / buttons */
+    --rose-gold-dk: #A66860;   /* hover state */
+    --berry:        #6E2438;   /* deep accent, headings */
+    --ink:          #3E2A2E;   /* body text */
+    --paper:        #FFFDFB;   /* card background */
+
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body:    'Jost', sans-serif;
+    --radius: 22px;
+    --shadow-soft: 0 10px 40px -12px rgba(110, 36, 56, 0.15);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--berry);
+    margin: 0;
+    font-weight: 600;
+  }
+
+  section {
+    position: relative;
+    padding: clamp(3rem, 8vw, 6rem) 1.5rem;
+  }
+
+  #heartsCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ============================================================
+     HERO SECTION
+     ============================================================ */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    background:
+      radial-gradient(ellipse at 50% 0%, var(--blush) 0%, transparent 60%),
+      linear-gradient(180deg, var(--cream) 0%, var(--cream) 100%);
+  }
+
+  .hero .eyebrow {
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: var(--rose-gold-dk);
+    margin-bottom: 1.2rem;
+    animation: fadeUp 1s ease forwards;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    line-height: 1.2;
+    max-width: 20ch;
+    animation: fadeUp 1.2s ease forwards 0.3s;
+    opacity: 0;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--rose-gold-dk);
+  }
+
+  .hero p.sub {
+    margin: 1.5rem auto 0;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--ink);
+    max-width: 40ch;
+    line-height: 1.6;
+    animation: fadeUp 1.2s ease forwards 0.6s;
+    opacity: 0;
+  }
+
+  .scroll-cue {
+    margin-top: 4rem;
+    font-size: 0.85rem;
+    color: var(--rose-gold-dk);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    animation: fadeUp 1s ease forwards 1s;
+    opacity: 0;
+  }
+
+  .scroll-cue span {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(var(--rose-gold), transparent);
+    animation: pulseDown 2s ease-in-out infinite;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulseDown {
+    0%, 100% { transform: scaleY(0.6); transform-origin: top; opacity: 0.4; }
+    50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  }
+
+  /* ============================================================
+     WHY YOU CAUGHT MY EYE SECTION
+     ============================================================ */
+  .vibe-section {
+    background: var(--cream-deep);
+    z-index: 2;
+  }
+
+  .section-head {
+    text-align: center;
+    max-width: 50ch;
+    margin: 0 auto clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .section-head h2 {
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-head p {
+    color: var(--rose-gold-dk);
+    font-size: 1rem;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .vibe-card {
+    background: var(--paper);
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+    border: 1px solid rgba(200, 140, 134, 0.15);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+  }
+
+  .vibe-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .vibe-card .icon {
+    font-size: 2rem;
+    color: var(--rose-gold);
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+
+  .vibe-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .vibe-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--ink);
+    opacity: 0.85;
+  }
+
+  /* ============================================================
+     THE PROPOSAL / ASK SECTION
+     ============================================================ */
+  .proposal {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
+    background: radial-gradient(circle at 50% 50%, var(--blush) 0%, var(--cream) 70%);
+  }
+
+  .proposal .kicker {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    color: var(--rose-gold-dk);
+    margin-bottom: 0.5rem;
+  }
+
+  .proposal h2 {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    max-width: 18ch;
+    line-height: 1.2;
+    margin-bottom: 3rem;
+  }
+
+  .buttons-wrap {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 120px;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .yes-btn {
+    padding: 1.2rem 3rem;
+    border-radius: 999px;
+    border: none;
+    background: var(--berry);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(110, 36, 56, 0.4);
+    transition: transform 0.2s ease, background 0.2s ease;
+    z-index: 10;
+  }
+
+  .yes-btn:hover {
+    transform: scale(1.05);
+    background: var(--berry-deep, #4A1626);
+  }
+
+  .no-btn {
+    padding: 1.2rem 3rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--rose-gold);
+    background: transparent;
+    color: var(--rose-gold-dk);
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+  }
+
+  .no-btn.fleeing {
+    position: fixed;
+    z-index: 999;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    background: var(--paper);
+  }
+
+  .no-caption {
+    position: fixed;
+    z-index: 1000;
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--berry);
+    font-size: 1.1rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    background: var(--paper);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .no-caption.show { opacity: 1; }
+
+  /* ============================================================
+     CELEBRATION OVERLAY
+     ============================================================ */
+  .celebration {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(251, 241, 236, 0.98);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  .celebration.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .celebration-content {
+    background: var(--paper);
+    padding: 3rem 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    max-width: 450px;
+    width: 100%;
+    transform: scale(0.9);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .celebration.active .celebration-content {
+    transform: scale(1);
+  }
+
+  .celebration h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .celebration p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .phone-badge {
+    display: inline-block;
+    background: var(--cream);
+    color: var(--berry);
+    padding: 1rem 2rem;
+    border-radius: 999px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border: 1px dashed var(--rose-gold);
+  }
+
+  #confettiCanvas {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.85rem;
+    color: var(--rose-gold-dk);
+    z-index: 2;
+    position: relative;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="heartsCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+
+<section class="hero">
+  <p class="eyebrow">To someone completely captivating</p>
+  <h1>I have a small question for you...</h1>
+  <p class="sub">But first, I wanted to quickly share a few reasons why you completely caught my attention.</p>
+  <div class="scroll-cue">
+    <span></span>
+    Scroll down
+  </div>
+</section>
+
+<section class="vibe-section">
+  <div class="section-head">
+    <h2>Why You Caught My Eye</h2>
+    <p>Just a few things that stand out every single time</p>
+  </div>
+
+  <div class="cards-grid">
+    <div class="vibe-card">
+      <div class="icon">✨</div>
+      <h3>Your Energy</h3>
+      <p>You carry a completely genuine, positive aura around you that effortlessly lights up any room you step into.</p>
+    </div>
+
+    <div class="vibe-card">
+      <div class="icon">💭</div>
+      <h3>The Mystery</h3>
+      <p>Every time I see you, I find myself wanting to skip the small talk and actually discover the mind and stories behind that smile.</p>
+    </div>
+
+    <div class="vibe-card">
+      <div class="icon">☕</div>
+      <h3>The Vibe</h3>
+      <p>There's a magnetic, easygoing charm about you that makes me think hanging out with you would be the absolute best part of my week.</p>
+    </div>
+  </div>
+</section>
+
+<section class="proposal">
+  <p class="kicker">So, keeping it simple...</p>
+  <h2>Would you like to go out on a coffee date with me?</h2>
+
+  <div class="buttons-wrap" id="buttonsWrap">
+    <button class="yes-btn" id="yesBtn">Yes, I'd love to!</button>
+    <button class="no-btn" id="noBtn">No</button>
+  </div>
+</section>
+
+<span class="no-caption" id="noCaption"></span>
+
+<footer>
+  Made with courage & admiration
+</footer>
+
+<div class="celebration" id="celebration">
+  <div class="celebration-content">
+    <h2>Yay! 🎉💖</h2>
+    <p>You just made my day completely. Life is too short to miss out on meeting incredible people. Hit me up whenever you're free!</p>
+    <div class="phone-badge">+1 (234) 567-8901</div>
+  </div>
+</div>
+
+<script>
+  /* ============================================================
+     1. SCROLL REVEAL FOR CARDS
+     ============================================================ */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) entry.target.classList.add('in-view');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.vibe-card').forEach(card => observer.observe(card));
+
+  /* ============================================================
+     2. FLOATING HEARTS BACKGROUND
+     ============================================================ */
+  (function ambientHearts(){
+    const canvas = document.getElementById('heartsCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, hearts = [];
+
+    function resize(){
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function createHeart(){
+      return {
+        x: Math.random() * w,
+        y: h + 20,
+        size: 6 + Math.random() * 12,
+        speed: 0.4 + Math.random() * 0.8,
+        wobble: Math.random() * Math.PI * 2,
+        opacity: 0.1 + Math.random() * 0.2
+      };
+    }
+
+    for(let i=0; i<15; i++) {
+      let heart = createHeart();
+      heart.y = Math.random() * h; // scatter initially
+      hearts.push(heart);
+    }
+
+    function drawHeart(x, y, size, opacity){
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.beginPath();
+      let s = size / 16;
+      ctx.moveTo(0, 4 * s);
+      ctx.bezierCurveTo(0, 0, -8 * s, 0, -8 * s, -4 * s);
+      ctx.bezierCurveTo(-8 * s, -8 * s, 0, -8 * s, 0, -2 * s);
+      ctx.bezierCurveTo(0, -8 * s, 8 * s, -8 * s, 8 * s, -4 * s);
+      ctx.bezierCurveTo(8 * s, 0, 0, 0, 0, 4 * s);
+      ctx.fillStyle = `rgba(200, 140, 134, ${opacity})`;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function update(){
+      ctx.clearRect(0,0,w,h);
+      hearts.forEach(hrt => {
+        hrt.y -= hrt.speed;
+        hrt.wobble += 0.01;
+        hrt.x += Math.sin(hrt.wobble) * 0.3;
+        if(hrt.y < -20) Object.assign(hrt, createHeart());
+        drawHeart(hrt.x, hrt.y, hrt.size, hrt.opacity);
+      });
+      requestAnimationFrame(update);
+    }
+    update();
+  })();
+
+  /* ============================================================
+     3. RUNAWAY NO BUTTON LOGIC
+     ============================================================ */
+  const noBtn = document.getElementById('noBtn');
+  const caption = document.getElementById('noCaption');
+  let dodgeCount = 0;
+
+  const NO_CAPTIONS = [
+    "Are you sure? 🤔",
+    "Give it another thought!",
+    "Coffee is on me though! ☕",
+    "Wrong button! 👀",
+    "Nice try! ⚡",
+    "Not that easy!"
+  ];
+
+  function flee(e){
+    if(!noBtn.classList.contains('fleeing')){
+      noBtn.classList.add('fleeing');
+    }
+    
+    const padding = 30;
+    const btnRect = noBtn.getBoundingClientRect();
+    
+    // Calculate randomized coordinates within the viewport safely
+    const maxX = window.innerWidth - btnRect.width - padding;
+    const maxY = window.innerHeight - btnRect.height - padding;
+    
+    const randomX = Math.max(padding, Math.random() * maxX);
+    const randomY = Math.max(padding, Math.random() * maxY);
+    
+    noBtn.style.left = `${randomX}px`;
+    noBtn.style.top = `${randomY}px`;
+
+    // Show funny hint texts
+    caption.textContent = NO_CAPTIONS[dodgeCount % NO_CAPTIONS.length];
+    caption.classList.add('show');
+    
+    // Position caption near the running button
+    caption.style.left = `${randomX}px`;
+    caption.style.top = `${randomY - 45}px`;
+    
+    dodgeCount++;
+  }
+
+  noBtn.addEventListener('mouseenter', flee);
+  noBtn.addEventListener('click', flee);
+
+  /* ============================================================
+     4. CONFETTI CELEBRATION LOGIC
+     ============================================================ */
+  const yesBtn = document.getElementById('yesBtn');
+  const celebration = document.getElementById('celebration');
+  const confCanvas = document.getElementById('confettiCanvas');
+  const confCtx = confCanvas.getContext('2d');
+  let particles = [], activeAnimation = false;
+
+  function initConfetti(){
+    confCanvas.width = window.innerWidth;
+    confCanvas.height = window.innerHeight;
+    particles = [];
+    const colors = ['#F1C7CE', '#C88C86', '#6E2438', '#FFFDFB'];
+    for(let i=0; i<150; i++){
+      particles.push({
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+        vx: (Math.random() - 0.5) * 15,
+        vy: (Math.random() - 0.8) * 15,
+        size: 5 + Math.random() * 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 10
+      });
+    }
+  }
+
+  function animateConfetti(){
+    if(!activeAnimation) return;
+    confCtx.clearRect(0,0,confCanvas.width,confCanvas.height);
+    
+    let alive = false;
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.2; // gravity effect
+      p.vx *= 0.98; // air drag
+      p.rotation += p.rotationSpeed;
+
+      if(p.y < confCanvas.height) alive = true;
+
+      confCtx.save();
+      confCtx.translate(p.x, p.y);
+      confCtx.rotate(p.rotation * Math.PI / 180);
+      confCtx.fillStyle = p.color;
+      confCtx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+      confCtx.restore();
+    });
+
+    if(alive){
+      requestAnimationFrame(animateConfetti);
+    }
+  }
+
+  yesBtn.addEventListener('click', () => {
+    celebration.classList.add('active');
+    activeAnimation = true;
+    initConfetti();
+    animateConfetti();
+    if(noBtn.classList.contains('fleeing')){
+      noBtn.style.display = 'none';
+      caption.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
