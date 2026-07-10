@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 <title>A Special Question For You</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -256,7 +256,6 @@
     max-width: 600px;
   }
 
-  /* UPDATED SLICK & SMALL YES BUTTON */
   .yes-btn {
     padding: 0.9rem 2.5rem;
     border-radius: 999px;
@@ -271,6 +270,7 @@
     box-shadow: 0 15px 35px -5px rgba(74, 18, 26, 0.4);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 10;
+    touch-action: manipulation;
   }
 
   .yes-btn:hover {
@@ -278,7 +278,6 @@
     box-shadow: 0 20px 40px -3px rgba(74, 18, 26, 0.5), 0 0 15px var(--blush);
   }
 
-  /* SMALLER MATCHING NO BUTTON BASE */
   .no-btn {
     padding: 0.9rem 2.5rem;
     border-radius: 999px;
@@ -291,6 +290,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
     z-index: 10;
+    touch-action: none; /* Prevents text-selection / year-typing on touch devices */
   }
 
   .no-btn.fleeing {
@@ -544,7 +544,7 @@
   })();
 
   /* ============================================================
-     3. RUNAWAY NO BUTTON LOGIC
+     3. RUNAWAY NO BUTTON LOGIC (FIXED FOR TOUCH)
      ============================================================ */
   const noBtn = document.getElementById('noBtn');
   const caption = document.getElementById('noCaption');
@@ -560,6 +560,9 @@
   ];
 
   function flee(e){
+    // Prevent zoom/text selection behavior on touch devices
+    if(e) e.preventDefault();
+
     if(!noBtn.classList.contains('fleeing')){
       noBtn.classList.add('fleeing');
     }
@@ -585,7 +588,9 @@
     dodgeCount++;
   }
 
+  // Intercepts all mouse and high-speed touch mechanics perfectly
   noBtn.addEventListener('mouseenter', flee);
+  noBtn.addEventListener('touchstart', flee, { passive: false });
   noBtn.addEventListener('click', flee);
 
   /* ============================================================
