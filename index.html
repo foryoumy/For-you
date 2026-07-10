@@ -11,14 +11,14 @@
 
 <style>
   :root {
-    --cream:        #FDF6F0;   /* warmer, cleaner background */
-    --cream-deep:   #F5E6CC;   /* elegant tone for sections */
-    --blush:        #FCDAD7;   /* softer blush pink */
-    --rose-gold:    #D4A373;   /* premium gold accent */
+    --cream:        #FDF6F0;   
+    --cream-deep:   #F5E6CC;   
+    --blush:        #FCDAD7;   
+    --rose-gold:    #D4A373;   
     --rose-gold-dk: #B58255;   
-    --berry:        #4A121A;   /* deep royal burgundy */
+    --berry:        #4A121A;   
     --ink:          #2B1E1A;   
-    --paper:        rgba(255, 253, 251, 0.75); /* Frosted glass effect */
+    --paper:        rgba(255, 253, 251, 0.75); 
 
     --font-display: 'Playfair Display', serif;
     --font-body:    'Inter', sans-serif;
@@ -93,12 +93,6 @@
     max-width: 18ch;
     animation: fadeUp 1.2s ease forwards 0.3s;
     opacity: 0;
-  }
-
-  .hero h1 em {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--rose-gold-dk);
   }
 
   .hero p.sub {
@@ -206,7 +200,6 @@
     font-size: 2.2rem;
     margin-bottom: 1.2rem;
     display: inline-block;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.05));
   }
 
   .vibe-card h3 {
@@ -325,7 +318,7 @@
   .no-caption.show { opacity: 1; }
 
   /* ============================================================
-     CELEBRATION OVERLAY (UPDATED FOR INSTAGRAM LINK)
+     CELEBRATION OVERLAY
      ============================================================ */
   .celebration {
     position: fixed;
@@ -369,29 +362,24 @@
   }
 
   .celebration p {
-    font-size: 1.15rem;
-    line-height: 1.7;
-    margin-bottom: 2.5rem;
-    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+    color: var(--ink);
   }
 
-  .insta-badge {
+  .reply-badge {
     display: inline-block;
-    background: linear-gradient(135deg, #F9CE34 0%, #EE2A7B 50%, #6228D7 100%);
-    color: #fff;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--blush) 100%);
+    color: var(--berry);
     padding: 1.2rem 2.5rem;
-    border-radius: 999px;
-    font-size: 1.2rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    box-shadow: 0 10px 25px rgba(238, 42, 123, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .insta-badge:hover {
-    transform: scale(1.05);
-    box-shadow: 0 15px 30px rgba(238, 42, 123, 0.45);
+    border-radius: var(--radius);
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    border: 1px solid var(--rose-gold);
+    box-shadow: var(--shadow-soft);
   }
 
   #confettiCanvas {
@@ -474,10 +462,10 @@
 <div class="celebration" id="celebration">
   <div class="celebration-content">
     <h2>Yay! 🕊️💝</h2>
-    <p>You just made me the happiest person imaginable. Click the badge below to send me a DM on Instagram so we can make it official!</p>
-    <a href="https://instagram.com/EMBERFORGE.STUDIO" target="_blank" class="insta-badge">
-      📸 @EMBERFORGE.STUDIO
-    </a>
+    <p>You just made me the happiest person imaginable. I'm so excited to start this journey with you.</p>
+    <div class="reply-badge">
+      ✨ Close this page and head right back to our chat to reply and let me know! I'm waiting for your text! 😊
+    </div>
   </div>
 </div>
 
