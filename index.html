@@ -61,7 +61,7 @@
   }
 
   /* ============================================================
-     HERO SECTION (IMPROVED TYPE & GRADIENT)
+     HERO SECTION
      ============================================================ */
   .hero {
     min-height: 100svh;
@@ -224,7 +224,7 @@
   }
 
   /* ============================================================
-     THE PROPOSAL / ASK SECTION (NEW INTENT)
+     THE PROPOSAL / ASK SECTION
      ============================================================ */
   .proposal {
     min-height: 100svh;
@@ -263,7 +263,6 @@
     max-width: 600px;
   }
 
-  /* Glowing luxurious YES Button */
   .yes-btn {
     padding: 1.3rem 4rem;
     border-radius: 999px;
@@ -326,7 +325,7 @@
   .no-caption.show { opacity: 1; }
 
   /* ============================================================
-     CELEBRATION OVERLAY
+     CELEBRATION OVERLAY (UPDATED FOR INSTAGRAM LINK)
      ============================================================ */
   .celebration {
     position: fixed;
@@ -376,17 +375,23 @@
     font-weight: 300;
   }
 
-  .phone-badge {
+  .insta-badge {
     display: inline-block;
-    background: linear-gradient(135deg, var(--cream) 0%, var(--blush) 100%);
-    color: var(--berry);
+    background: linear-gradient(135deg, #F9CE34 0%, #EE2A7B 50%, #6228D7 100%);
+    color: #fff;
     padding: 1.2rem 2.5rem;
     border-radius: 999px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 600;
     letter-spacing: 0.05em;
-    border: 2px dashed var(--rose-gold);
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    text-decoration: none;
+    box-shadow: 0 10px 25px rgba(238, 42, 123, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .insta-badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(238, 42, 123, 0.45);
   }
 
   #confettiCanvas {
@@ -469,8 +474,10 @@
 <div class="celebration" id="celebration">
   <div class="celebration-content">
     <h2>Yay! 🕊️💝</h2>
-    <p>You just made me the happiest person imaginable. I can't wait to treat you like the queen you are. Drop me a text whenever you are free!</p>
-    <div class="phone-badge">+1 (234) 567-8901</div>
+    <p>You just made me the happiest person imaginable. Click the badge below to send me a DM on Instagram so we can make it official!</p>
+    <a href="https://instagram.com/EMBERFORGE.STUDIO" target="_blank" class="insta-badge">
+      📸 @EMBERFORGE.STUDIO
+    </a>
   </div>
 </div>
 
